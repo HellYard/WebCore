@@ -22,6 +22,9 @@ class TemplateController {
    * variable replacement `
    * include multiple files
    * Documentation
+   *
+   * TODO/FUTURE:
+   * Ability to allow templating of CSS files.
    */
   private $variables = array();
   private $snippets = array();

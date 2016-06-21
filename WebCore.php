@@ -29,6 +29,14 @@ class WebCore
 
     }
 
+    private function load_core() {
+      $this->add("db", "Database");
+      $this->add("form", "Form");
+      $this->add("template", "Template");
+      $this->add("oauth", "OAuth");
+      $this->add("secure", "Authentication");
+    }
+
   /**
    * Returns an instance of the WebCore Registry class, or creates and returns a new one if needed.
    * @return mixed
@@ -36,7 +44,11 @@ class WebCore
     public static function instance() {
         if(!isset(self::$instance)) {
             $class = __CLASS__;
-            self::$instance = new $class;
+            $singleton = new $class;
+            if($singleton instanceof WebCore) {
+              $singleton->load_core();
+              self::$instance = $singleton;
+            }
         }
         return self::$instance;
     }
@@ -44,8 +56,8 @@ class WebCore
   /**
    * Override, to ensure we don't allow new instances.
    */
-    public function __clone() {
-        trigger_error("Unable to clone WebCore registry class!");
+    private function __clone() {
+
     }
 
    /**
@@ -54,7 +66,7 @@ class WebCore
     * @return mixed - Returns the controller's instance if it exists.
     * @throws Exception - Throws if controller with name "@param $name" doesn't exists.
     */
-    public function get_controller($name) {
+    public function get($name) {
         if(is_object(self::$controllers[$name])) {
             return self::$controllers[$name];
         }
@@ -66,7 +78,7 @@ class WebCore
    * @param $name - The file name of the controller to add.
    * @param $controller - The class name of the controller to add.
    */
-    public function add_controller($name, $controller) {
+    public function add($name, $controller) {
         require_once('Controllers/'.$controller.'.php');
         self::$controllers[$name] = new $controller(self::$instance);
     }

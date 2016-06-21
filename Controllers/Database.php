@@ -105,6 +105,20 @@ class DataController {
     return $this->current;
   }
 
+  public function test_connection($host, $db, $user, $pass, $engine = "mysql") {
+    $dsn = (empty($custom_dsn)) ? $this->get_dsn($host, $db, $engine) : $custom_dsn;
+    var_dump($dsn);
+    try {
+      $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_EMULATE_PREPARES => false
+      ]);
+      echo "Connected!";
+    } catch (PDOException $exception) {
+      trigger_error("Error while attempting to create new connection!");
+    }
+  }
+
   public function query($query_str, $cache = false, $prepared = false, $values = array()) {
     $connection = $this->get_connection();
     if ($connection instanceof PDO) {
@@ -130,7 +144,21 @@ class DataController {
     return -1;
   }
 
+  public function create_table($name, $columns, $options = array()) {
 
+  }
+
+  public function select($table, $columns, $options = array()) {
+
+  }
+
+  public function update($table, $columns, $options = array()) {
+
+  }
+
+  public function delete() {
+
+  }
 
   //MISC Class Functions.
   public function close($id) {
@@ -167,28 +195,7 @@ class DataController {
 
   }
 
-  public function __destruct() {
-    foreach ($this->connections as $connection) {
-      $connection = null;
-    }
-  }
-
-  //Private Utility functions
-  private function get_dsn($host = "localhost", $db = "database", $engine = "mysql") {
-    $dsn = "";
-    $to_replace = array("{host}", "{db}", "{engine}");
-    $replacements = array($host, $db, $engine);
-
-    try {
-      $dsn = $this->get_query("dsn", "", $engine);
-      str_ireplace($to_replace, $replacements, $dsn);
-    } catch (Exception $e) {
-      trigger_error("Exception while getting DSN string." . $e->getMessage());
-    }
-    return $dsn;
-  }
-
-  private function get_query($identifier, $string = "", $engine = "mysql") {
+  public function get_query($identifier, $string = "", $engine = "mysql") {
     if (!array_key_exists($engine, $this->pre_defined) || !array_key_exists($identifier, $this->pre_defined[$engine])
       || empty($string) && is_array($this->pre_defined[$engine][$identifier])
       || !empty($string) && !array_key_exists($string, $this->pre_defined[$engine][$identifier])
@@ -206,4 +213,32 @@ class DataController {
       throw new Exception("Invalid query identifier & string combination!");
     }
   }
+
+  public function __destruct() {
+    foreach ($this->connections as $connection) {
+      $connection = null;
+    }
+  }
+
+  //Private Utility functions
+  private function get_dsn($host = "localhost", $db = "database", $engine = "mysql") {
+    $dsn = "";
+    $to_replace = array("{host}", "{db}", "{engine}");
+    $replacements = array($host, $db, $engine);
+
+    try {
+      $dsn = $this->get_query("dsn", "", $engine);
+      return str_ireplace($to_replace, $replacements, $dsn);
+    } catch (Exception $e) {
+      trigger_error("Exception while getting DSN string." . $e->getMessage());
+    }
+    return $dsn;
+  }
+}
+
+class DataQuery {
+
+  private $query_table;
+  private $query_columns = array();
+  private $query_options = array();
 }

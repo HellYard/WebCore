@@ -7,3 +7,5 @@ TODO
 - Template Controller for allowing developers to use template files
 - Expand upon the Data Controller
 - Possibly creating a controller for providing a REST API for any web application and/or site
+- Pagination Controller
+- AutoLoad Controller classes in a folder specified by the Controller's Name.

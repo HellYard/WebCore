@@ -11,6 +11,7 @@
  */
 class FormController {
 
+  private $values = array();
   private $sets = array();
   private $elements = array();
   private $use_label = true;
@@ -69,6 +70,20 @@ class FormController {
 
   public function set_label($label) {
     $this->use_label = $label;
+  }
+
+  public function parse($submitted) {
+    foreach($submitted as $key => $value) {
+      $this->values[$key] = htmlspecialchars($value);
+    }
+
+    foreach($this->elements as $key => $value) {
+      if(isset($value["required"]) && $value["required"]) {
+        if(!in_array($key, $this->values)) {
+          throw new Exception("Required form parameter is missed");
+        }
+      }
+    }
   }
 
   public function build() {

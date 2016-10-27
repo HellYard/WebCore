@@ -51,7 +51,7 @@ class DataController {
 
   //DB-related class functions.
   public function create($host = "localhost", $db = "database", $user = "username", $pass = "password", $engine = "mysql", $custom_dsn = "") {
-    $dsn = (empty($custom_dsn)) ? $this->get_dsn($host, $db, $engine) : $custom_dsn;
+    $dsn = (empty($custom_dsn))? $this->get_dsn($host, $db, $engine) : $custom_dsn;
 
     try {
       $this->connections[] = new PDO($dsn, $user, $pass, [

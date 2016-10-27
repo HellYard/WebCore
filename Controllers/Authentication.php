@@ -28,32 +28,3 @@ class AuthenticationController {
   }
 
 }
-
-class Group {
-
-  private $permissions = array();
-  private $id = null;
-  private $name = null;
-  private $admin = false;
-  private $preset = false;
-
-}
-
-class User {
-
-  private $permissions = array();
-  private $id = null;
-  private $ip = null;
-  private $avatar = "";
-  private $name = null;
-  private $password = null;
-  private $group = null;
-  public $email = null;
-  public $registered = null;
-  public $logged_in = null;
-  public $activation_key = null;
-  public $activated = 0;
-  public $banned = 0;
-  public $online = 0;
-
-}

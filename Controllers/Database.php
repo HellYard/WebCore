@@ -39,46 +39,6 @@ class DataController {
         "DROP" => "DROP TABLE `{name}`;"
       ),
     ),
-    "sybase" => array(
-      "dsn" => "dblib:dbname={db};host={host}",
-    ),
-    "firebird" => array(
-      "dsn" => "firebird:dbname={host}:{db}",
-    ),
-    "ibm" => array(
-      "dsn" => "ibm:DRIVER={IBM DB2 ODBC DRIVER};DATABASE={db};HOSTNAME={host};PROTOCOL=TCPIP;",
-    ),
-    "informix" => array(
-      "dsn" => "informix:host={host};database={db};protocol=onsoctcp;EnableScrollableCursors=1",
-    ),
-    "ms" => array(
-      "dsn" => "sqlsrv:Server={host};Database={db}",
-    ),
-    "azure" => array(
-      "dsn" => "sqlsrv:Server={host}.database.windows.net;Database={db}",
-    ),
-    "oracle" => array(
-      "dsn" => "oci:dbname=//{host}/{db}",
-    ),
-    "db2" => array(
-      "dsn" => "odbc:DRIVER={IBM DB2 ODBC DRIVER};DATABASE={db};HOSTNAME={host};PROTOCOL=TCPIP;",
-    ),
-    "access" => array(
-      "dsn" => "odbc:Driver={Microsoft Access Driver (*.mdb)};Dbq={db};",
-    ),
-    "postgre" => array(
-      "dsn" => "pgsql:host={host};dbname={db};",
-    ),
-    "sqlite" => array(
-      "dsn" => "sqlite:{db}",
-    ),
-    "sqlite2" => array(
-      "dsn" => "sqlite2:{db}",
-    ),
-    "4d" => array(
-      "dsn" => "host={host}",
-    ),
-    "cubrid" => array(),
     "mysql" => array(),
   );
 
@@ -234,11 +194,4 @@ class DataController {
     }
     return $dsn;
   }
-}
-
-class DataQuery {
-
-  private $query_table;
-  private $query_columns = array();
-  private $query_options = array();
 }

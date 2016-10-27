@@ -74,16 +74,16 @@ class WebCore {
     if (is_object(self::$controllers[$name])) {
       return self::$controllers[$name];
     }
-    throw new Exception("Unable to get controller with name of \"" . $name . "\".");
+    throw new Exception("Unable to get controller with name of \"".$name."\".");
   }
 
   /**
    * Used to add a controller with name "@param $name" to the controllers array.
-   * @param $name - The file name of the controller to add.
-   * @param $controller - The class name of the controller to add.
+   * @param string $name - The file name of the controller to add.
+   * @param string $controller - The class name of the controller to add.
    */
   public function add($name, $controller) {
-    require_once('Controllers/' . $controller . '.php');
+    require_once('Controllers/'.$controller.'.php');
     self::$controllers[$name] = new $controller(self::$instance);
   }
 }

@@ -37,11 +37,11 @@ class TemplateController {
   //Useful class functions.
   public function template($name, $cache = true, $time = 6000) {
     $result = "";
-    if($cache && $this->is_cached($name)) {
+    if ($cache && $this->is_cached($name)) {
       $result = $this->read_cache($name);
     } else {
       $result = $this->parse_template($name);
-      if($cache) {
+      if ($cache) {
         $this->cache($name, $result, $time);
       }
     }
@@ -49,8 +49,8 @@ class TemplateController {
   }
 
   public function snip($name, $override = false) {
-    if(!array_key_exists($name, $this->snippets) || array_key_exists($name, $this->snippets) && !$this->snippets[$name]["ob"]) {
-      if(array_key_exists($name, $this->snippets) && $override) {
+    if (!array_key_exists($name, $this->snippets) || array_key_exists($name, $this->snippets) && !$this->snippets[$name]["ob"]) {
+      if (array_key_exists($name, $this->snippets) && $override) {
         ob_start();
         $this->snippets[$name] = array(
           "ob" => true,
@@ -63,6 +63,11 @@ class TemplateController {
   }
 
   //Public utility functions
+
+  /**
+   * @param string $data
+   * @param integer $time
+   */
   public function cache($name, $data, $time) {
     $file = $this->location.$name."wcc";
     $current_time = time();
@@ -84,7 +89,7 @@ class TemplateController {
   private function is_cached($name) {
     $file = $this->location.$name."wcc";
 
-    if(file_exists($file)) {
+    if (file_exists($file)) {
       $data = $this->read_cache($name);
 
       return $data["expires"] < time();
@@ -98,7 +103,7 @@ class TemplateController {
   }
 
   public function remove_variable($name) {
-    if(in_array($name, $this->variables)) {
+    if (in_array($name, $this->variables)) {
       $this->variables[$name] = null;
     }
   }
@@ -118,7 +123,7 @@ class TemplateController {
     );
     $file = $this->location.$name."wcc";
 
-    if(file_exists($file)) {
+    if (file_exists($file)) {
 
       $lines = explode(PHP_EOL, gzdecode(file_get_contents($file)));
 
@@ -133,8 +138,8 @@ class TemplateController {
 
   //TODO: Possibly replace with regex.
   private function replace_variables($string) {
-    foreach($this->variables as $key => $value) {
-      if(!empty($value)) {
+    foreach ($this->variables as $key => $value) {
+      if (!empty($value)) {
         $string = str_ireplace($key, $value, $string);
       }
     }

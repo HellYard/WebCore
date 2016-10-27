@@ -33,8 +33,8 @@ class DataController {
     "default" => array(
       "dsn" => "{engine}:dbname={db};host={host}",
       "table" => array(
-        "create" => "CREATE TABLE IF NOT EXISTS `{name}` (" .
-          "{columns}" .
+        "create" => "CREATE TABLE IF NOT EXISTS `{name}` (".
+          "{columns}".
           ");",
         "DROP" => "DROP TABLE `{name}`;"
       ),
@@ -51,7 +51,7 @@ class DataController {
 
   //DB-related class functions.
   public function create($host = "localhost", $db = "database", $user = "username", $pass = "password", $engine = "mysql", $custom_dsn = "") {
-    $dsn = (empty($custom_dsn))? $this->get_dsn($host, $db, $engine) : $custom_dsn;
+    $dsn = (empty($custom_dsn)) ? $this->get_dsn($host, $db, $engine) : $custom_dsn;
 
     try {
       $this->connections[] = new PDO($dsn, $user, $pass, [
@@ -129,6 +129,9 @@ class DataController {
     $this->current = $id;
   }
 
+  /**
+   * @return string
+   */
   public function get_connection() {
     return $this->connections[$this->current];
   }
@@ -155,6 +158,9 @@ class DataController {
 
   }
 
+  /**
+   * @param string $identifier
+   */
   public function get_query($identifier, $string = "", $engine = "mysql") {
     if (!array_key_exists($engine, $this->pre_defined) || !array_key_exists($identifier, $this->pre_defined[$engine])
       || empty($string) && is_array($this->pre_defined[$engine][$identifier])
@@ -190,7 +196,7 @@ class DataController {
       $dsn = $this->get_query("dsn", "", $engine);
       return str_ireplace($to_replace, $replacements, $dsn);
     } catch (Exception $e) {
-      trigger_error("Exception while getting DSN string." . $e->getMessage());
+      trigger_error("Exception while getting DSN string.".$e->getMessage());
     }
     return $dsn;
   }

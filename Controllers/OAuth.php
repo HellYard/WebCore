@@ -35,15 +35,15 @@ class WebProvider {
   public function __construct() {
     try {
       $provider = new OAuthProvider();
-    } catch(OAuthException $e) {
+    } catch (OAuthException $e) {
       trigger_error(OAuthProvider::reportProblem($e));
     }
   }
 
   public function oauth($action = null) {
-    if($this->error || empty($action)) return;
+    if ($this->error || empty($action)) return;
 
-    switch($action) {
+    switch ($action) {
       case "":
         break;
     }

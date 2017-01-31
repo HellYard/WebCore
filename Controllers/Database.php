@@ -53,7 +53,7 @@ class DataController implements Controller {
   private $previous;
 
   //DB-related class functions.
-  public function create($host = "localhost", $db = "database", $user = "username", $pass = "password", $engine = "mysql", $custom_dsn = ""): int {
+  public function create(string $host = "localhost", string $db = "database", string $user = "username", string $pass = "password", string $engine = "mysql", string $custom_dsn = ""): int {
     $dsn = (empty($custom_dsn))? $this->get_dsn($host, $db, $engine) : $custom_dsn;
 
     try {
@@ -68,7 +68,7 @@ class DataController implements Controller {
     return $this->current;
   }
 
-  public function test_connection($host, $db, $user, $pass, $engine = "mysql") {
+  public function test_connection(string $host, string $db, string $user, string $pass, string $engine = "mysql") {
     $dsn = (empty($custom_dsn)) ? $this->get_dsn($host, $db, $engine) : $custom_dsn;
     var_dump($dsn);
     try {
@@ -82,7 +82,7 @@ class DataController implements Controller {
     }
   }
 
-  public function query($query_str, $cache = false, $prepared = false, $values = array()) {
+  public function query(string $query_str, bool $cache = false, bool $prepared = false, array $values = array()): int {
     $connection = $this->get_connection();
     if ($connection instanceof PDO) {
       $result = false;
@@ -107,23 +107,23 @@ class DataController implements Controller {
     return -1;
   }
 
-  public function create_table($name, $columns, $options = array()) {
+  public function create_table(string $name, array $columns, array $options = array()) {
 
   }
 
-  public function drop_table($name) {
+  public function drop_table(string $name) {
 
   }
 
-  public function insert($table, $columns, $options) {
+  public function insert(string $table, array $columns, array $options = array()) {
 
   }
 
-  public function select($table, $columns, $options = array()) {
+  public function select(array $table, array $columns, array $options = array()):int {
 
   }
 
-  public function update($table, $columns, $options = array()) {
+  public function update(string $table, array $columns, array $options = array()) {
 
   }
 
@@ -132,33 +132,33 @@ class DataController implements Controller {
   }
 
   //MISC Class Functions.
-  public function close($id) {
+  public function close(int $id) {
     $this->connections[$id] = null;
   }
 
-  public function change_connection($id) {
+  public function change_connection(int $id) {
     $this->current = $id;
   }
 
-  public function get_connection() {
+  public function get_connection(): PDO {
     return $this->connections[$this->current];
   }
 
-  public function store_data($data) {
+  public function store_data($data): int {
     $this->data = $data;
     return count($this->data) - 1;
   }
 
-  public function get_data($id) {
+  public function get_data(int $id) {
     return $this->data[$id];
   }
 
-  public function cache_result($result) {
+  public function cache_result($result): int {
     $this->results[$result];
     return count($this->results) - 1;
   }
 
-  public function get_result($id) {
+  public function get_result(int $id) {
     return $this->results[$id];
   }
 
@@ -166,7 +166,7 @@ class DataController implements Controller {
 
   }
 
-  public function get_query($identifier, $string = "", $engine = "mysql") {
+  public function get_query(string $identifier, string $string = "", string $engine = "mysql"): string {
     if (!array_key_exists($engine, $this->pre_defined) || !array_key_exists($identifier, $this->pre_defined[$engine])
       || empty($string) && is_array($this->pre_defined[$engine][$identifier])
       || !empty($string) && !array_key_exists($string, $this->pre_defined[$engine][$identifier])
@@ -192,7 +192,7 @@ class DataController implements Controller {
   }
 
   //Private Utility functions
-  private function get_dsn($host = "localhost", $db = "database", $engine = "mysql", $extras = array()) {
+  private function get_dsn(string $host = "localhost", string $db = "database", string $engine = "mysql", array $extras = array()): string {
     $dsn = "";
     $to_replace = array("{host}", "{db}", "{engine}");
     $to_replace = array_merge($to_replace, array_keys($extras));

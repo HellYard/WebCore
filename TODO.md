@@ -10,6 +10,9 @@ Plans
 - Possibly creating a controller for providing a REST API for any web application and/or site
 - Pagination Controller
 
+Finished
+----------
+
 
 Rejected Ideas
 -------------------

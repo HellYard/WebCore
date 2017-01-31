@@ -9,7 +9,7 @@
  * Last Modified: 5/25/2016 at 10:05 AM
  * Last Modified by Daniel Vidmar.
  */
-class TemplateController {
+class TemplateController implements Controller {
 
   /*
    * TODO/GOALS:
@@ -30,12 +30,12 @@ class TemplateController {
   private $snippets = array();
   private $location;
 
-  public function __construct($cache_location = "") {
+  public function __construct(string $cache_location = "") {
     $this->location = $cache_location;
   }
 
   //Useful class functions.
-  public function template($name, $cache = true, $time = 6000) {
+  public function template(string $name, bool $cache = true, int $time = 6000): string {
     $result = "";
     if($cache && $this->is_cached($name)) {
       $result = $this->read_cache($name);
@@ -48,7 +48,7 @@ class TemplateController {
     return $result;
   }
 
-  public function snip($name, $override = false) {
+  public function snip(string $name, bool $override = false) {
     if(!array_key_exists($name, $this->snippets) || array_key_exists($name, $this->snippets) && !$this->snippets[$name]["ob"]) {
       if(array_key_exists($name, $this->snippets) && $override) {
         ob_start();
@@ -63,7 +63,7 @@ class TemplateController {
   }
 
   //Public utility functions
-  public function cache($name, $data, $time) {
+  public function cache(string $name, string $data, int $time) {
     $file = $this->location.$name."wcc";
     $current_time = time();
     $info = array(
@@ -81,7 +81,7 @@ class TemplateController {
     fclose($handler);
   }
 
-  private function is_cached($name) {
+  private function is_cached(string $name): bool {
     $file = $this->location.$name."wcc";
 
     if(file_exists($file)) {
@@ -93,24 +93,24 @@ class TemplateController {
     return false;
   }
 
-  public function add_variable($name, $value) {
+  public function add_variable(string $name, $value) {
     $this->variables[$name] = $value;
   }
 
-  public function remove_variable($name) {
+  public function remove_variable(string $name) {
     if(in_array($name, $this->variables)) {
       $this->variables[$name] = null;
     }
   }
 
   //Private utility functions.
-  private function parse_template($name) {
+  private function parse_template(string $name): string {
     $result = "";
     //TODO: Create this function.
     return $result;
   }
 
-  private function read_cache($name) {
+  private function read_cache(string $name): string {
     $result = array(
       "timestamp" => "",
       "expires" => "",
@@ -132,7 +132,7 @@ class TemplateController {
   }
 
   //TODO: Possibly replace with regex.
-  private function replace_variables($string) {
+  private function replace_variables(string $string): string {
     foreach($this->variables as $key => $value) {
       if(!empty($value)) {
         $string = str_ireplace($key, $value, $string);

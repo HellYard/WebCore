@@ -40,7 +40,7 @@ class WebCore {
    * Returns an instance of the WebCore Registry class, or creates and returns a new one if needed.
    * @return mixed
    */
-  public static function instance() {
+  public static function instance(): WebCore {
     if (!isset(self::$instance)) {
       $class = __CLASS__;
       $singleton = new $class;
@@ -70,7 +70,7 @@ class WebCore {
    * @return mixed - Returns the controller's instance if it exists.
    * @throws Exception - Throws if controller with name "@param $name" doesn't exists.
    */
-  public function get($name) {
+  public function get($name): Controller {
     if (is_object(self::$controllers[$name])) {
       return self::$controllers[$name];
     }
@@ -82,7 +82,7 @@ class WebCore {
    * @param $name - The file name of the controller to add.
    * @param $controller - The class name of the controller to add.
    */
-  public function add($name, $controller) {
+  public function add(string $name, Controller $controller) {
     require_once('Controllers/' . $controller . '.php');
     self::$controllers[$name] = new $controller(self::$instance);
   }

@@ -9,7 +9,7 @@
  * Last Modified: 5/10/2016 at 6:50 PM
  * Last Modified by Daniel Vidmar.
  */
-class DataController {
+class DataController implements Controller {
 
   /*
    * TODO/GOALS:
@@ -33,10 +33,13 @@ class DataController {
     "default" => array(
       "dsn" => "{engine}:dbname={db};host={host}",
       "table" => array(
-        "create" => "CREATE TABLE IF NOT EXISTS `{name}` (" .
-          "{columns}" .
+        "create" => "CREATE TABLE IF NOT EXISTS `{name}` (".
+          "{columns}".
           ");",
-        "DROP" => "DROP TABLE `{name}`;"
+        "DROP" => "DROP TABLE `{name}`;",
+        "DELETE" => "DELETE FROM `{table}` WHERE {columns}",
+        "SELECT {rows} FROM `{table}` {condition}",
+        "UPDATE `{table}` SET {columns} WHERE {condition}"
       ),
     ),
     "mysql" => array(),
@@ -50,7 +53,7 @@ class DataController {
   private $previous;
 
   //DB-related class functions.
-  public function create($host = "localhost", $db = "database", $user = "username", $pass = "password", $engine = "mysql", $custom_dsn = "") {
+  public function create($host = "localhost", $db = "database", $user = "username", $pass = "password", $engine = "mysql", $custom_dsn = ""): int {
     $dsn = (empty($custom_dsn))? $this->get_dsn($host, $db, $engine) : $custom_dsn;
 
     try {
@@ -105,6 +108,14 @@ class DataController {
   }
 
   public function create_table($name, $columns, $options = array()) {
+
+  }
+
+  public function drop_table($name) {
+
+  }
+
+  public function insert($table, $columns, $options) {
 
   }
 
@@ -181,10 +192,12 @@ class DataController {
   }
 
   //Private Utility functions
-  private function get_dsn($host = "localhost", $db = "database", $engine = "mysql") {
+  private function get_dsn($host = "localhost", $db = "database", $engine = "mysql", $extras = array()) {
     $dsn = "";
     $to_replace = array("{host}", "{db}", "{engine}");
+    $to_replace = array_merge($to_replace, array_keys($extras));
     $replacements = array($host, $db, $engine);
+    $replacements = array_merge($replacements, array_values($extras));
 
     try {
       $dsn = $this->get_query("dsn", "", $engine);

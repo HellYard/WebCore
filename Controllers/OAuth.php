@@ -9,7 +9,7 @@
  * Last Modified: 6/5/2016 at 6:16 PM
  * Last Modified by Daniel Vidmar.
  */
-class OAuthController {
+class OAuthController implements Controller {
 
   /*
    * TODO/GOALS:
@@ -40,7 +40,7 @@ class WebProvider {
     }
   }
 
-  public function oauth($action = null) {
+  public function oauth(string $action = null) {
     if($this->error || empty($action)) return;
 
     switch($action) {

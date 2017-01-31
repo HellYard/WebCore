@@ -9,7 +9,7 @@
  * Last Modified: 6/5/2016 at 5:35 PM
  * Last Modified by Daniel Vidmar.
  */
-class AuthenticationController {
+class AuthenticationController implements Controller {
 
   /*
    * TODO/GOALS:

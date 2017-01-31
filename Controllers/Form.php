@@ -9,7 +9,7 @@
  * Last Modified: 6/14/2016 at 7:22 PM
  * Last Modified by Daniel Vidmar.
  */
-class FormController {
+class FormController implements Controller {
 
   private $values = array();
   private $sets = array();
@@ -33,20 +33,20 @@ class FormController {
 
   }
 
-  public function add_set($name, $order = 200) {
+  public function add_set(string $name, int $order = 200) {
     if(!array_key_exists($name, $this->sets)) {
       if($order >= count($this->sets)) { $order = count($this->sets) - 1; }
       array_splice($this->sets, $order, 0, $name);
     }
   }
 
-  public function remove_set($name) {
+  public function remove_set(string $name) {
     if(array_key_exists($name, $this->sets)) {
       array_splice($this->sets, array_search($name, array_keys($this->sets)), 1);
     }
   }
 
-  public function add_element($name, $options = array(), $order = 200) {
+  public function add_element(string $name, array $options = array(), int $order = 200) {
     if(!array_key_exists($name, $this->elements)) {
       if($order >= count($this->elements)) { $order = count($this->elements) - 1; }
       array_splice($this->elements, $order, 0, $name);
@@ -54,25 +54,25 @@ class FormController {
     }
   }
 
-  public function remove_element($name) {
+  public function remove_element(string $name) {
     if(array_key_exists($name, $this->elements)) {
       array_splice($this->elements, array_search($name, array_keys($this->elements)), 1);
     }
   }
 
-  public function set_method($method) {
+  public function set_method(string $method) {
     $this->method = $method;
   }
 
-  public function set_action($url) {
+  public function set_action(string $url) {
     $this->action = $url;
   }
 
-  public function set_label($label) {
+  public function set_label(bool $label) {
     $this->use_label = $label;
   }
 
-  public function parse($submitted) {
+  public function parse(array $submitted) {
     foreach($submitted as $key => $value) {
       $this->values[$key] = htmlspecialchars($value);
     }
@@ -92,7 +92,7 @@ class FormController {
     $this->form .= '</form>';
   }
 
-  private function build_sets() {
+  private function build_sets(): string {
     $sets = "";
     $sets .= $this->build_set("default");
     foreach(array_keys($this->sets) as $set) {
@@ -101,14 +101,14 @@ class FormController {
     return $sets;
   }
 
-  private function build_set($name) {
+  private function build_set(string $name): string {
     $set = "<fieldset>";
     $set .= $this->build_elements($name);
     $set .= "</fieldset>";
     return $set;
   }
 
-  private function build_elements($set) {
+  private function build_elements(string $set): string {
     $elements = "";
     foreach($this->elements as $key => $value) {
       if(!is_array($value)) {
@@ -158,7 +158,7 @@ class FormController {
     return $elements;
   }
 
-  private function build_options($select, $element) {
+  private function build_options(string $select, array $element): string {
     $replace = array("%name%", "%value%");
     $replacements = array();
     $options = "";
